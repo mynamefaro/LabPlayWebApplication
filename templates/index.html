@@ -1,0 +1,103 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<title>LabPlay</title>
+	<page>
+		<h-title>เกมยอดนิยม</h-title>
+		<container class="grid-5 is-full">
+			<a href="/games/math" class="type_button">
+				<h3>คณิตศาสตร์</h3>
+				<img src="{% static 'pic/math.jpg' %}">
+			</a>
+			<a href="/games/physics" class="type_button">
+				<h3>ฟิสิกส์</h3>
+				<img src="{% static 'pic/physics.jpg' %}">
+			</a>
+			<a href="/games/chemistry" class="type_button">
+				<h3>เคมี</h3>
+				<img src="{% static 'pic/chemistry.jpg' %}">
+			</a>
+			<a href="/games/biology" class="type_button">
+				<h3>ชีววิทยา</h3>
+				<img src="{% static 'pic/biology.jpg' %}">
+			</a>
+			<a href="/games/anstronomy" class="type_button">
+				<h3>ดาราศาสตร์</h3>
+				<img src="{% static 'pic/anstronomy.jpg' %}">
+			</a>
+		</container>
+		<br>
+		<container class="grid is-full">
+			{% for game in  games %}
+			<box-list img="/static/pic/game.jpg" name="{{game.name}}" type="{{game.type}}"creator="{{game.creator}}" href="#open" rel="modal:open" onclick="modal('{{game.id}}')"></box-list>
+			{% endfor %}
+		</container>
+		<div class="modal is-full-in-mobile is-middle" id="open" style="width:400px;height:450px">
+			<div class="form is-middle" style="background-color:transparent;width:730px">
+				<div id="load"><img src="{% static 'pic/load.gif' %}" class="is-middle" width='50' height='50' style='display:inline-block;'/></div>
+				<div style="margin-top:20px;" class="is-full-in-mini-tablet is-full">
+					<container style="width:100%;padding:10px">
+						<img src="{% static 'pic/game.jpg' %}" class="is-circle is-block" style="margin:auto" height="200" width="200"/>
+					</container>
+				</div>
+				<container style="width:100%;" class="is-full-in-mini-tablet">
+					<div style="width:100%;float:right">
+						<h-title style="text-align:left;color:#000033;margin:0;width:200px;float:left" id="name"></h-title>
+						<a onclick id="like_logo" style="float:right"><span></span></a>
+						<container style="width:100%;font-size:18px;">
+							<table>
+								<tr><td width="100"><b style="color:#000033">สาขาวิชา</b style="color:#000033"></td><td>: <label id="type"></label></td></tr>
+								<tr><td><b style="color:#000033">ผู้ชื่นชอบ</b></td><td>: <label id="like"></label></td></tr>
+							</table>
+						</container>
+						<br>
+						<a-button style="width:90%;text-align:center;margin-bottom:10px;" class="is-blue" id="play">เล่น</a-button>
+					</div>
+				</container>
+			</div>
+		</div>
+	</page>
+
+	<!--SCRIPT-->
+	<script>
+		function log(massage){
+			alert(massage);
+		}
+		function modal(id) {
+			$('#load').show();
+			$.ajax({
+			url: "{% url 'index' %}",
+			data: {
+				  'id': id
+			},
+			dataType: 'json',
+			success: function (game) {
+				$('#name').html(game.name);
+				$('#type').html(game.type);
+				$('#like').html(game.like);
+				$('#like_logo').click(function (){like(game.id);});
+				$("#play").attr("href", "/dashboard/"+game.id+"/");
+				$("#save").attr("href", "/dashboard/"+game.id+"/");
+				$('#load').hide();
+			}
+			});
+		}
+		function like(id) {
+			$('#load').show();
+			$.ajax({
+			url: "/like/"+id,
+			data: {
+				  'id': id
+			},
+			dataType: 'json',
+			success: function (game) {
+				$(".modal").hide();
+				$(".jquery-modal").hide();
+				$('#load').hide();
+			}
+			});
+		}
+	  </script>
+{% endblock %}
+ 

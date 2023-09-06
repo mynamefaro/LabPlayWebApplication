@@ -1,0 +1,101 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="{% static 'css/css.css' %}" type="text/css">
+		<link rel="icon" href="{% static 'pic/logo.jpg' %}">
+		<link href="https://fonts.googleapis.com/css?family=Kanit&display=swap" rel="stylesheet">
+		<link href="{% static 'validator.css' %}" rel="stylesheet">
+		<script src="{% static 'script/vue.js' %}"></script>
+		<script src="{% static 'script/jquery.js' %}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+		<style>
+			td{
+				text-align:center;
+				padding:5px;
+				margin:0;
+				margin-bottom:10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<title>LabPlay</title>
+			<div class="is-full"><a-button class="is-red is-right" style="border-radius:0" href="#exit" rel="modal:open">จบการเล่น</a-button></div>
+			<page>
+				{% if PIN %}
+				<h-title id="pin">{{PIN}}</h-title>
+				{% endif %}
+				<h-title style="margin:0">ตารางคะแนน</h-title>
+				<br><div style="padding:5px;background-color:white;">
+				<table style="width:100%;" cellpadding="0" cellmargin="0" id="mytable">
+				<thead>
+					<tr>
+						<td width="100"><b>NO.</b></td><td><b>PLAYER NAME</b></td><td width="100"><b>SCROLL</b></td>
+					</tr>
+				</thead>
+				<tbody id="mybody"></tbody>
+				</table>
+				</div>
+				<div class="modal is-full-in-mobile is-middle" id="exit" style="width:400px;height:160px">
+					<div class="form is-middle">
+						{% if PIN %}
+						<br>คุณจะบันทึกผลคะแนนหรือไม่
+						<br><br><a-button style="width:90%;text-align:center;margin-bottom:10px;" class="is-blue" href="#rename" rel="modal:open">บันทึก</a-button>
+						<a-button style="width:90%;text-align:center;margin-bottom:10px;" id="save" class="is-red" href="/finish/{{id}}/">ไม่บันทึก</a-button>
+						{% else %}
+						<br>ออกจากบันทึกผลคะแนน
+						<br><br><a-button style="width:90%;text-align:center;margin-bottom:10px;" class="is-blue" href="{% url 'index' %}">ออก</a-button>
+						<a-button style="width:90%;text-align:center;margin-bottom:10px;" id="save" class="is-red" href="/finish/{{id}}/">ลบบันทึก</a-button>
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="modal is-full-in-mobile is-middle" id="rename" style="width:400px;height:170px">
+					<div class="form is-middle">
+						<form action="/finish/{{id}}/" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<br>กรุณากรอกชื่่อบันทึกผลคะแนน
+						<br><br><input type="textbox" placeholder="กรุณากรอกชื่อบันทึก" name="name" class="form-control" style="margin-bottom:10px">
+						<br><button style="width:100%;text-align:center;margin-bottom:10px;" class="a_button is-blue" id="play">บันทึก</button>
+						</form>
+					</div>
+				</div>
+			</page>
+		</div>
+	<script type="text/javascript" src="{% static 'script/app.js' %}"></script>
+	<script>
+		var di = {{id}};
+		function getData(){
+			$.ajax({
+			url: ".",
+			data : {
+				"id" : '0' + di
+			},
+			dataType: 'json',
+			success: function (result) {
+
+				if(result != ''){
+					$("#mybody").empty();
+					var i = 1;
+					$.each(result ,function(key,val){
+						var tr = '<tr>';
+						tr = tr + '<td>' +  i + '</td>';
+						tr = tr + '<td>' +  val["name"] + '</td>';
+						tr = tr + '<td>' +  val["scroll"] + '</td>';
+						tr = tr + '</tr>';
+						$('#mytable > tbody:last').append(tr);
+						i=i+1;
+					});
+				}
+			}
+			});
+		}
+		setInterval(getData,1000);
+	</script>
+	</body>
+</html>

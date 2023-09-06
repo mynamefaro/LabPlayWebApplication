@@ -1,0 +1,19 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<title>LabPlay</title>
+	<page>
+		<h-title>ผลการค้นหา</h-title>
+		<container class="grid is-full">
+			{% if massage %}
+				<h3>{{massage}}</h3>
+			{% endif %}
+			{% for game in  games %}
+				<box-list img="{% static 'pic/game.jpg' %}" name="{{game.name}}" type="{{game.type}}"creator="{{game.creator}}" href="/games/play/{{game.id}}"></box-list>
+			{% endfor %}
+		</container>
+	</page>
+
+	<!--SCRIPT-->
+{% endblock %}

@@ -1,0 +1,105 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<page class="is-full">
+		<title>ลงทะเบียน</title>
+		<br>
+		<container class="form" slyle="margin:auto;">
+			<h-title>ลงทะเบียน</h-title>
+			<form action="." method="post" id="form" enctype="multipart/form-data">
+				{% csrf_token %}
+				{% if massage %}
+				<label style="color:red;">{{massage}}</label><br>
+				{% endif %}
+				<label>ชื่อผู้ใช้งาน (4 ตัวอักษรขึ้นไป)</label>
+				<input type="textbox" placeholder="ชื่อผู้ใช้" name="name" class="form-control" value="{{username}}">
+				<label for="name" class="error"></label>
+				<div style="height:10px;"></div>
+
+				<label>อีเมล (หนึ่งอีเมลสำหรับหนึ่งผู้ใช้งานเท่านั้น)</label>
+				<br><input type="textbox" placeholder="E-mail" name="mail" class="form-control" value="{{mail}}">
+				<label for="mail" class="error"></label>
+				<div style="height:10px;"></div>
+
+				<label>รหัสผ่าน (ประกอบด้วย a-z,A-Z,1-9 6-8 ตัวอักษร)</label>
+				<br><input type="password" placeholder="รหัสผ่าน" name="pas" class="form-control" value="{{password}}">
+				<label for="pas" class="error"></label>
+				<div style="height:10px;"></div>
+
+				<label>วันเดือนปีเกิด (วันที่-เดือน-ปี(ค.ศ.))</label>
+				<br><input type="textbox" placeholder="วัน-เดือน-ปีเกิด (ค.ศ.)" name="bd" class="form-control" value="{{birthday}}" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+				<label for="bd" class="error"></label>
+				<div style="height:10px;"></div>
+
+				<label>เพศ</label>
+				<br><select name="gen">
+						<option value="">เพศ</option>
+						<option value="female">หญิง</option>
+						<option value="male">ชาย</option>
+					</select>
+				<label for="gen" class="error"></label>
+				<div style="height:10px;"></div>
+
+				<label>อาชีพ</label>
+				<br><select name="job">
+					<option value="">อาชีพ</option>
+					<option value="teacher">ครู</option>
+					<option value="student">นักเรียน</option>
+					<option value="parent">ผู้ปกครอง</option>
+					<option value="developer">นักพัฒนา</option>
+					<option value="others">อื่นๆ</option>
+				</select>
+				<label for="job" class="error"></label>
+				<div style="height:10px;"></div>
+				
+				<label>รูปโปรไฟล์ (เฉพาะไฟล์ .jpg และ .png)</label>
+				<br><input type="file" placeholder="รูปโปรไฟล์" name="profile" class="form-control">
+				<div style="height:10px;"></div>
+
+				<br><button class="a_button is-full is-blue" type="submit">ลงทะเบียน</button>
+			</form>
+		</container>
+	</page>
+	<!--SCRIPT-->
+	<script>
+		$(function() {
+			$("#form").validate({
+				rules: {
+					name:{
+						required: true,
+						minlength: 4
+					},
+					mail: {
+						required: true,
+						email: true
+					},
+					pas: {
+						required: true,
+						minlength: 5
+					},
+					bd:"required",
+					gen:"required",
+					job:"required"
+				},
+				messages: {
+      				name: {
+        				required: "กรุณากรอกข้อมูลให้ครบถ้วน",
+        				minlength: "กรุณากรอกชื่อให้ถูกต้อง"
+      				},
+      				mail: "กรุณากรอกข้อมูลให้ครบถ้วน",
+      				pas: {
+        				required: "กรุณากรอกข้อมูลให้ครบถ้วน",
+        				minlength: "กรุณากรอกรหัสผ่านให้ถูกต้องตามกำหนด"
+      				},
+      				bd: "กรุณากรอกข้อมูลให้ครบถ้วน",
+					gen: "กรุณาเลือกข้อมูลให้ครบถ้วน",
+					job: "กรุณาเลือกข้อมูลให้ครบถ้วน"
+    			},
+				submitHandler: function(form) {
+					form.submit();
+				}
+			});
+		});
+	</script>
+{% endblock %}

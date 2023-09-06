@@ -1,0 +1,69 @@
+ayt6r634624543246514ew{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css.css" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Kanit&display=swap" rel="stylesheet">
+		<link href="validator.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="app">
+			<navbar>
+				<level-left style="width: 120px !important;">
+					<button @click="drop" ><span style="float:left;margin-right:10px;"class="get-in-tablet"><h2 style="margin:0;">&#x2630</h2></span></button>
+					<span id="logo"></span>
+					<span id="yrc"></span>
+				</level-left>
+				<level-right>
+					{% if request.session.auth %}
+					<a href="{% url 'console' %}" class="user_button">
+						<h3>{{request.session.auth}}</h3>
+						<img src="{{request.session.profile}}">
+					</a>
+					{% else %}
+					<a-button href="{% url 'login' %}"style="margin-right:10px;color:black;background-color:transparent">ลงชื่อเข้าใช้</a-button>
+					<a-button href="{% url 'regis' %}" class="is-blue">สมัครสมาชิก</a-button>
+					{% endif %}
+				</level-right>
+				<level-left class="lost-in-tablet" style="padding-right:50px">
+						<a-link href="{% url 'index' %}" style="padding:4px 10px">หน้าหลัก</a-link>
+						<a-link href="{% url 'contact' %}" style="padding:4px 10px">ติดต่อเรา</a-link>
+						<a-button href="#" class="is-greenblue">LabPlayEditor</a-button>
+				</level-left>
+				<level-left class="lost-in-mobile">
+					<div>
+						<form class="search" action="/search/" method="get">
+							<button type="submit"><span></span></button>
+							<input type="textbox" placeholder="ค้นหา" name="search"/>
+						</form>
+					</div>
+				</level-left>
+			</navbar>
+			<transition name="bottom">
+				<div v-if="navdown" class="navdown">
+					<navdown>
+						<div class="get-in-tablet">
+							<a href="{% url 'index' %}"><h3>หน้าหลัก</h3></a>
+							<a href="{% url 'contact' %}"><h3>ติดต่อเรา</h3></a>
+						</div>
+						<div>
+							<form class="search get-in-mobile" action="/search/" method="get">
+								<button type="submit"><span></span></button>
+								<input type="textbox" placeholder="ค้นหา" name="search"/>
+							</form>
+						</div>
+					</navdown>
+				</div>
+			</transition>
+
+			<!--PAGE-->
+
+            <banner></banner>
+            {% block content %}
+			{% endblock %}
+        </div>
+		<script type="text/javascript" src="{% static 'script/app.js' %}"></script>
+    </body>
+</html>

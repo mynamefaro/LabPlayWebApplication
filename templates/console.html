@@ -1,0 +1,39 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<title>{{request.session.auth}}</title>
+	<page>
+		<div style="float:left;width:250px;margin-top:20px;" class="is-full-in-mini-tablet">
+			<container style="width:100%;padding:10px">
+				<img src="{{request.session.profile}}" class="is-circle is-block" height="150" width="150"/>
+				<h-title style="text-align:center;margin-top:0;margin-bottom:10px;">{{request.session.auth}}</h-title>
+				<container style="width:100%;padding:0 10px;background-color:white;margin-bottom:10px">
+					<table>
+						<tr><td width="70"><b>เพศ</b></td><td>{{data.genre}}</td></tr>
+						<tr><td width="70"><b>อาชีพ</b></td><td>{{data.job}}</td></tr>
+					</table>
+				</container>
+				<a href="#edit" rel="modal:open"><button class="a_button is-full is-blue">แก้ไขข้อมูล</button></a>
+				<br><br><a href="#exit" rel="modal:open"><button class="a_button is-full is-red">ออกจากระบบ</button></a>
+			</container>
+		</div>
+		<container style="float:right;width:calc(100% - 250px)" class="is-full-in-mini-tablet">
+			<h-title>บันทึกผลคะแนน</h-title>
+			<container class="grid is-full">
+				{% for record in records %}
+				<box-list img="/static/pic/game.jpg" name="{{record.name}}" type="{{record.date}}" href="/record/{{record.id}}"></box-list>
+				{% endfor %}
+			</container>
+		</container>
+	</page>
+	<!--SCRIPT-->
+	<div class="modal" id="exit">
+		<p>คูณแน่ใจหรือไม่ที่จะออกจากระบบ</p>
+		<a href="{% url 'logout' %}"><button class="a_button is-full is-red">ออกจากระบบ</button></a>
+	</div>
+	<div class="modal" id="edit">
+		<p>การแก้ไขข้อมูลจะเป็นเช่นเดียวกับการสมัครสมาชิกใหม่โดยใช้อีเมลเดิมของท่าน กรุณากรอกข้อมูลให้ครบถ้วนด้วย</p>
+		<a href="{% url 'regis' %}"><button class="a_button is-full is-blue">แก้ไขข้อมูล</button></a>
+	</div>
+{% endblock %}

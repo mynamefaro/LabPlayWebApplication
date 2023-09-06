@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../static/script/css.css">
+		<link rel="icon" href="{% static 'pic/logo.jpg' %}">
+		<link href="https://fonts.googleapis.com/css?family=Kanit&display=swap" rel="stylesheet">
+		<script src="../static/script/vue.js"></script>
+		<script src="{% static 'script/jquery.js' %}"></script>
+		<title>LabPlay</title>
+	</head>
+	<body>
+		<div id="app">
+			<navbar>
+				<level-left style="width: 90px !important;">
+					<button @click="drop"><span style="float:left;margin-right:10px;"><h2 style="margin:0;">&#x2630</h2></span></button>
+					<span id="logo"></span>
+				</level-left>
+				<level-right>
+					<a-button href="login.html"style="margin-right:10px" class="is-greenblue">Log In</a-button>
+					<a-button href="regis.html" class="is-blue">Sign Up</a-button>
+				</level-right>
+				<level-left class="desktop" style="padding-right:50px">
+						<a-link v-for="navbar in navbars" :href="navbar.href" style="padding:4px 10px">[navbar.name]</a-link>
+				</level-left>
+				<level-left class="tablet">
+					<search></search>
+				</level-left>
+			</navbar>
+			<transition name="bottom">
+				<div v-if="dropdown" class="navdown">
+					<navdown v-if="dropdown">
+						<a v-for="navbar in navbars" :href="navbar.href"><h3>[navbar.name]</h3></a>
+						<search class="screen-700"></search>
+					</navdown>
+				</div>
+			</transition>
+
+			<!--PAGE-->
+
+            <banner></banner>
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script type="text/javascript" src="../static/script/app.js"></script>
+    </body>
+</html>

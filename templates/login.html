@@ -1,0 +1,54 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<page class="is-full">
+		<div class="is-middle">
+		<div class="form">
+			<title>เข้าสู่ระบบ</title>
+			<h-title>เข้าสู่ระบบ</h-title>
+			<form action="." method="post" id="form">
+				{% csrf_token %}
+				{% if massage %}
+				<label style="color:red;">{{massage}}</label><br>
+				{% endif %}
+				<input type="textbox" placeholder="อีเมลผู้ใช้" name="user" style="margin-bottom:10px;">
+				<label for="user" class="error"></label>
+				<div style="padding-bottom:10px"></div>
+
+				<input type="password" placeholder="รหัสผ่าน" name="pass" style="margin-bottom:10px;">
+				<label for="pass" class="error"></label>
+				<div style="padding-bottom:10px"></div>
+
+				<button class="a_button is-full is-blue" type="submit">เข้าสู่ระบบ</button>
+			</form>
+		</div>
+		<p align="center"><a href="{% url 'regis' %}">หากลืมรหัสผ่านโปรดสมัครสมาชิกใหม่โดยใช้อีเมลเดิมของท่าน</a></p>
+		</div>
+	</page>
+	<!--SCRIPT-->
+	<script>
+		$(function() {
+			$("#form").validate({
+				rules: {
+					user:{
+						required: true,
+					},
+					pass: {
+						required: true,
+					}
+				},
+				messages: {
+      				user: {
+        				required: "กรุณากรอกชื่อผู้ใช้",
+      				},
+      				pass: {
+        				required: "กรุณากรอกรหัสผ่าน",
+      				}
+    			},
+				submitHandler: function(form) {
+					form.submit();
+				}
+			});
+		});
+	</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<page class="is-full">
+		<title>:::{{massage}}</title>
+		<div class="is-middle" style="width:400px;text-align:center">
+			<h-title style="color:#000033">{{massage}}</h-title>
+			<h2 id="coutdown">จะกลับสู่หน้าหลักในอีก 5 วินาที</h2>
+			<a href="{% url 'index' %}"><button class="a_button is-full is-blue" style="border-radius:20px;">กลับสู่หน้าหลัก</button></a>
+		</div>
+	</page>
+	<!--SCRIPT-->
+	<script>
+		var second = 4;
+		var x = setInterval(function() {
+			$("#coutdown").html("จะกลับสู่หน้าหลักในอีก " + second + " วินาที");
+			second--;
+			if (second < 0) {
+  				clearInterval(x);
+				window.location.href = "{% url 'index' %}";
+			}
+		}, 1000);
+	</script>
+{% endblock %}
